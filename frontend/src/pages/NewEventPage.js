@@ -12,6 +12,7 @@ export default NewEventPage;
 
 export async function action({request}){
 const data = await request.formData();
+
 const eventData = {
 title: data.get('title'),
 image: data.get('image'),
@@ -26,6 +27,10 @@ const response = await fetch('http://localhost:8080/events', {
     },
     body: JSON.stringify(eventData),
 });
+
+if (response.status === 422){
+    return response;
+}
 
  if(!response.ok){
      throw json({message: 'Could not save event.'}, {status: 500});
